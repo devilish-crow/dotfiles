@@ -1,0 +1,47 @@
+#!/bin/bash
+sudo apk add iwd openresolv cage cagebreak sway swaybg pipewire pipewire-pulse rust flatpak bubblewrap man-db || exit 1
+
+cd desktop.d
+cargo build
+sudo mv target/debug/desktop.d /usr/bin/desktop
+
+sudo rm /etc/init.d/alpine-update 2> /dev/null
+sudo echo '#!/sbin/openrc-run
+description="Alpine Linux system updater"
+
+depend() {
+  need localmount
+  need bootmisc
+  need iwd
+}
+
+start() {
+  ebegin "Updating packages to latest version"
+  (apk update && apk upgrade) > /dev/null
+  eend $?
+}' > /etc/init.d/alpine-update
+sudo chmod +x /etc/init.d/alpine-update
+sudo rc-update add alpine-update default
+
+sudo rm /etc/init.d/wpa_*
+sudo rm /etc/iwd/main.conf
+sudo echo '#[EAP]
+#mtu=1400
+
+[General]
+EnableNetworkConfiguration=True
+#ControlPortOverNL80211=True
+#RoamThreshold=-70
+
+[Network]
+NameResolvingService=resolvconf
+
+#[Scan]
+# DisablePeriodicScan=false
+# DisableRoamingScan=false
+
+#[Blacklist]
+
+#[Rank]
+# BandModifier5Ghz=1.0' > /etc/iwd/main.conf
+sudo rc-update add iwd boot
