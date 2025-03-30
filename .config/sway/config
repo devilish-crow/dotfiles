@@ -1,6 +1,6 @@
 # Basic Settings
 set $mod Mod4
-set $term foot
+set $term foot -e ash -l
 set $browser firefox
 
 # Visual
@@ -25,10 +25,10 @@ output * bg '~/.config/sway/wall.png' fill
 bindsym Ctrl+Alt+t exec $term
 bindsym Ctrl+Alt+b exec $browser
 
-bindsym Ctrl+W kill
-bindsym Ctrl+R reload
+bindsym $mod+Ctrl+W kill
+bindsym $mod+Ctrl+R reload
 
-bindsym $mod+Print exec grim -g "$(slurp -d)" - | wl-copy
+bindsym $mod+Insert exec grim -g "$(slurp -d)" - | wl-copy
 bindsym $mod+End exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 bindsym $mod+Left focus left
@@ -84,7 +84,7 @@ bar {
 }
 
 # Clipboard persistance
-exec wl-paste --type text/plain --watch clipman store --histpath="~/.local/state/clipman-primary.json"
+exec wl-paste --watch clipman store --histpath="~/.local/state/clipman-primary.json"
 
 # Desktop portal setup
 exec dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway

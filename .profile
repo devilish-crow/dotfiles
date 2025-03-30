@@ -4,7 +4,9 @@ export XDG_RUNTIME_DIR=$HOME
 export XDG_CONFIG_PATH=$HOME/.config/
 
 # A somewhat buggy implementation of a dialog menu, good enough for something you'll only use at boot time
-desktop
+if [ -z "$DISPLAY" ]; then
+  desktop
+fi
 
 # Utility functions
 adm() {

@@ -1,9 +1,5 @@
 #!/bin/bash
-sudo apk add iwd openresolv cage cagebreak sway swaybg pipewire pipewire-pulse rust flatpak bubblewrap man-db || exit 1
-
-cd desktop.d
-cargo build
-sudo mv target/debug/desktop.d /usr/bin/desktop
+sudo apk add iwd openresolv cage cagebreak sway swaybg pipewire pipewire-pulse greetd-tuigreet flatpak bubblewrap man-db || exit 1
 
 sudo rm /etc/init.d/alpine-update 2> /dev/null
 sudo echo '#!/sbin/openrc-run
@@ -11,19 +7,24 @@ description="Alpine Linux system updater"
 
 depend() {
   need localmount
+  need networking
   need bootmisc
   need iwd
 }
 
 start() {
   ebegin "Updating packages to latest version"
-  (apk update && apk upgrade) > /dev/null
+  (apk update && apk upgrade) > /dev/null &
   eend $?
 }' > /etc/init.d/alpine-update
 sudo chmod +x /etc/init.d/alpine-update
 sudo rc-update add alpine-update default
 
-sudo rm /etc/init.d/wpa_*
+sudo rm /etc/init.d/wpa_* 2> /dev/null
+sudo rm /etc/network/interfaces 2> /dev/null
+sudo echo 'auto lo
+iface lo inet looback' > /etc/network/interfaces
+
 sudo rm /etc/iwd/main.conf
 sudo echo '#[EAP]
 #mtu=1400
@@ -45,3 +46,14 @@ NameResolvingService=resolvconf
 #[Rank]
 # BandModifier5Ghz=1.0' > /etc/iwd/main.conf
 sudo rc-update add iwd boot
+
+sudo rm /etc/greetd/config.toml 2> /dev/null
+sudo mv sway /usr/bin/sway-launch
+sudo mkdir /etc/greetd
+sudo echo '[terminal]
+vt = 7
+
+[default_session]
+command = "tuigreet --time"
+user = "crow"
+' > /etc/greetd/config.toml

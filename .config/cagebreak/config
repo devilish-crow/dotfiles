@@ -1,6 +1,6 @@
 # Copyright 2020 - 2024, project-repo and the cagebreak contributors
 # SPDX-License-Identifier: MIT
-exec foot -e ash -c "cat .config/rice/wallpaper && ash"
+exec foot -e ash -c "cat .config/cagebreak/wall && ash"
 
 # General settings and key bindings
 workspaces 6
