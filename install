@@ -1,8 +1,15 @@
 #!/bin/bash
-sudo apk add iwd openresolv cage cagebreak sway swaybg pipewire pipewire-pulse greetd-tuigreet flatpak bubblewrap man-db || exit 1
+# Main installation, provides wireless compatibility, dhcp and DNS resolving, screenshot functionality, audio, a login screen and an app sandbox
+doas apk add iwd openresolv sway swaybg grim slurp clipman pipewire pipewire-pulse wireplumber greetd-tuigreet flatpak bubblewrap man-db || exit 1
 
-sudo rm /etc/init.d/alpine-update 2> /dev/null
-sudo echo '#!/sbin/openrc-run
+# Desktop portals, uncomment if you want to be able to use screen sharing
+# doas apk add xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+
+# Kiosk dependencies, uncomment if this is your desired setup. You may also install pipewire and wireplumber manually.
+# doas apk add cage cagebreak
+
+doas rm /etc/init.d/alpine-update 2> /dev/null
+doas echo '#!/sbin/openrc-run
 description="Alpine Linux system updater"
 
 depend() {
@@ -17,16 +24,16 @@ start() {
   (apk update && apk upgrade) > /dev/null &
   eend $?
 }' > /etc/init.d/alpine-update
-sudo chmod +x /etc/init.d/alpine-update
-sudo rc-update add alpine-update default
+doas chmod +x /etc/init.d/alpine-update
+doas rc-update add alpine-update default
 
-sudo rm /etc/init.d/wpa_* 2> /dev/null
-sudo rm /etc/network/interfaces 2> /dev/null
-sudo echo 'auto lo
+doas rm /etc/init.d/wpa_* 2> /dev/null
+doas rm /etc/network/interfaces 2> /dev/null
+doas echo 'auto lo
 iface lo inet looback' > /etc/network/interfaces
 
-sudo rm /etc/iwd/main.conf
-sudo echo '#[EAP]
+doas rm /etc/iwd/main.conf
+doas echo '#[EAP]
 #mtu=1400
 
 [General]
@@ -45,12 +52,16 @@ NameResolvingService=resolvconf
 
 #[Rank]
 # BandModifier5Ghz=1.0' > /etc/iwd/main.conf
-sudo rc-update add iwd boot
+doas rc-update add iwd boot
 
-sudo rm /etc/greetd/config.toml 2> /dev/null
-sudo mv sway /usr/bin/sway-launch
-sudo mkdir /etc/greetd
-sudo echo '[terminal]
+cp .profile ~/
+rm .profile
+
+# Not really needed for kiosk operation
+doas rm /etc/greetd/config.toml 2> /dev/null
+doas mv sway /usr/bin/sway-launch
+doas mkdir /etc/greetd
+doas echo '[terminal]
 vt = 7
 
 [default_session]
