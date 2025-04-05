@@ -112,5 +112,4 @@ user = "$USER"
 EOF
 fi
 
-# Script completion message
 echo "Installation complete. You now have a desktop! :yeppie:"
