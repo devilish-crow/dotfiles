@@ -1,26 +1,27 @@
 Sway Dotfiles for Alpine Linux
 ------------------------------
 These are my dotfiles for Alpine Linux. They include:
-- sway (as a tiling window manager)
+- sway (as a tiling window manager and wireless headphone input redirecter)
 - grim & slurp (for taking screenshots)
 - pipewire (for audio)
+- bluez (for bluetooth support)
 - pulsemixer (for controlling audio)
 - greetd with tuigreet (login manager)
-- xdg-desktop-portal (Wayland portal support)
+- xdg-desktop-portal (Desktop portal support)
 - rofi (stylised app launcher)
 - waybar (status bar)
 - foot (terminal)
 
 Installing:
 -----------
-WARNING: The installation process will wipe your ~/.profile and /etc/greetd/config.toml
-You can use the `install` bash script to install this configuration on your Alpine machine. You could also execute `sway-run` to start the desktop enviroment.
+WARNING: The installation process will wipe your ~/.profile and /etc/greetd/config.toml <br>
+You can use the `install` ash script to install this configuration on your Alpine machine. You could also execute `sway-run` to start the desktop enviroment.
 
 Screenshots:
 ------------
-![desktop wallpaper](https://cdn.discordapp.com/attachments/1140271425719107766/1357789011535728753/screenshot-04-04_21.png?ex=67f17b0e&is=67f0298e&hm=ba64efd4b934b9f6705db52db051b44954ca85e1b02d2aa4e55e955f79e5a4b9&)
-![app launcher](https://cdn.discordapp.com/attachments/1140271425719107766/1357789257477128342/screenshot-04-04_21.png?ex=67f17b49&is=67f029c9&hm=6979e858212f7c4d653aeea903378c37099c2ed1ea0c1162de12a8d02453ef9b&)
-![system management apps](https://cdn.discordapp.com/attachments/1140271425719107766/1357789473760346232/screenshot-04-04_21.png?ex=67f17b7d&is=67f029fd&hm=b3a8107752489269cdb6e5e3d077a39fb1734fc1539d5191f3e2fe0df2d8103c&)
+![desktop wallpaper](https://cdn.discordapp.com/attachments/1140271425719107766/1358188174207226027/screenshot-04-06_00.png?ex=67f2eece&is=67f19d4e&hm=18793015382caa7d179c04f7ba9433344bc9e86a39a97ab725405944be63f444&)
+![app launcher](https://cdn.discordapp.com/attachments/1140271425719107766/1358188360497102858/screenshot-04-06_00.png?ex=67f2eefb&is=67f19d7b&hm=356d8051e193be066a8072c356a1d05ca7116852eb5756dfcb79d1c377d77754&)
+![system management apps](https://cdn.discordapp.com/attachments/1140271425719107766/1358188459390402713/screenshot-04-06_00.png?ex=67f2ef12&is=67f19d92&hm=7abf4e37bd13d9d196a8834828dfa90fd52046e0d9a6ec39faec2ef138d8e49e&)
 
 Kiosk Mode:
 -----------

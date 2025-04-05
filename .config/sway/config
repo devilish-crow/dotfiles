@@ -83,6 +83,10 @@ bar {
     swaybar_command waybar
 }
 
+# Bluetooth headphone stuff
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl play-pause
+
 # Clipboard persistance
 exec wl-paste --watch clipman store --histpath="~/.local/state/clipman-primary.json"
 
