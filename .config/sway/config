@@ -1,6 +1,6 @@
 # Basic Settings
 set $mod Mod4
-set $term foot -e ash -l
+set $term foot
 set $browser firefox
 
 # Visual
@@ -28,7 +28,7 @@ bindsym Ctrl+Alt+b exec $browser
 bindsym $mod+Ctrl+W kill
 bindsym $mod+Ctrl+R reload
 
-bindsym $mod+Insert exec grim -g "$(slurp -d)" - | wl-copy
+bindsym $mod+Insert exec grim -g "$(slurp -d)" "$HOME/Pictures/screenshot-$(date +%m-%d_%H).png"
 bindsym $mod+End exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 bindsym $mod+Left focus left

@@ -1,5 +1,6 @@
 #!/bin/bash
-# Main installation, provides wireless compatibility, dhcp and DNS resolving, screenshot functionality, audio, a login screen and an app sandbox
+# Main installation, provides wireless compatibility, DHCP and DNS resolving, screenshot functionality, audio, a login screen and an app sandbox
+
 doas apk add iwd openresolv sway swaybg grim slurp clipman pipewire pipewire-pulse wireplumber greetd-tuigreet flatpak bubblewrap man-db || exit 1
 
 # Desktop portals, uncomment if you want to be able to use screen sharing
@@ -8,8 +9,12 @@ doas apk add iwd openresolv sway swaybg grim slurp clipman pipewire pipewire-pul
 # Kiosk dependencies, uncomment if this is your desired setup. You may also install pipewire and wireplumber manually.
 # doas apk add cage cagebreak
 
+# Remove old alpine-update script if it exists
 doas rm /etc/init.d/alpine-update 2> /dev/null
-doas echo '#!/sbin/openrc-run
+
+# Write the alpine-update script safely
+cat <<EOF | doas tee /etc/init.d/alpine-update > /dev/null
+#!/sbin/openrc-run
 description="Alpine Linux system updater"
 
 depend() {
@@ -22,18 +27,27 @@ depend() {
 start() {
   ebegin "Updating packages to latest version"
   (apk update && apk upgrade) > /dev/null &
-  eend $?
-}' > /etc/init.d/alpine-update
+  eend \$?
+}
+EOF
+
 doas chmod +x /etc/init.d/alpine-update
 doas rc-update add alpine-update default
 
+# Clean up old networking stuff
 doas rm /etc/init.d/wpa_* 2> /dev/null
 doas rm /etc/network/interfaces 2> /dev/null
-doas echo 'auto lo
-iface lo inet looback' > /etc/network/interfaces
 
-doas rm /etc/iwd/main.conf
-doas echo '#[EAP]
+# Write new interfaces config
+cat <<EOF | doas tee /etc/network/interfaces > /dev/null
+auto lo
+iface lo inet loopback
+EOF
+
+# Set up iwd config
+doas rm /etc/iwd/main.conf 2> /dev/null
+cat <<EOF | doas tee /etc/iwd/main.conf > /dev/null
+#[EAP]
 #mtu=1400
 
 [General]
@@ -51,20 +65,27 @@ NameResolvingService=resolvconf
 #[Blacklist]
 
 #[Rank]
-# BandModifier5Ghz=1.0' > /etc/iwd/main.conf
+# BandModifier5Ghz=1.0
+EOF
+
 doas rc-update add iwd boot
 
-cp .profile ~/
-rm .profile
+# Profile handling
+doas rm ~/.profile 2> /dev/null
+doas cp .profile ~/
 
 # Not really needed for kiosk operation
 doas rm /etc/greetd/config.toml 2> /dev/null
-doas mv sway /usr/bin/sway-launch
-doas mkdir /etc/greetd
-doas echo '[terminal]
+doas cp sway /usr/bin/sway-run
+
+# Create greetd config
+doas mkdir -p /etc/greetd 2> /dev/null
+cat <<EOF | doas tee /etc/greetd/config.toml > /dev/null
+[terminal]
 vt = 7
 
 [default_session]
 command = "tuigreet --cmd sway-run --time"
 user = "crow"
-' > /etc/greetd/config.toml
+EOF
+

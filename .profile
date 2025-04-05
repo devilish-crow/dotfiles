@@ -1,4 +1,4 @@
-export PATH=$PATH:~/.cargo/bin/:~/.rustup/toolchains/stable-x86_64-unknown-linux-musl/bin/:~/.local/state/rizin/build/binrz/rizin
+export PATH=~/.cargo/bin/:~/.rustup/toolchains/stable-x86_64-unknown-linux-musl/bin/:$PATH
 export MANPAGER=less
 
 # Utility functions
