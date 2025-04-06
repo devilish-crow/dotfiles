@@ -69,9 +69,9 @@
         "format-box": "border: 2px solid #800080; padding: 3px;"
     },
     "bluetooth": {
-        "format": "{icon}",
-        "format-icons": ["󰂯", "󰂲"],
-        "tooltip-format": "Bluetooth Status: {status}\nDevice: {device_name}\nSignal Strength: {signal_strength}%",
+        "format-connected": "󰂯",
+        "format-on": "󰂲",
+        "tooltip-format": "Bluetooth Status: {status}",
         "on-click": "foot -e bluetoothctl",
         "format-box": "border: 2px solid #0000FF; padding: 3px;",
         "interval": 5
