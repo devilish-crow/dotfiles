@@ -83,7 +83,7 @@
         "format-muted": "󰝟",
         "format-icons": {
             "headphone": "",
-            "default": ["󰖀", "󰕾", ""]
+            "default": ["󰖀", "󰕾"]
         },
         "on-click": "foot -e pulsemixer",
         "scroll-step": 1
