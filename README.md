@@ -23,7 +23,7 @@ Impala does not currently support connecting to or changing the connected wirele
 
 Sound:
 ------
-Your audio input might feel the effects of echoing. To fix that, you will need to set up your applications to use the echo cancel source as your input device and maybe fiddle around with your volume settings. You can open the volume management app by clicking on the sound icon.
+Your audio input might feel the effects of echoing. To fix that, you will need to set up your applications to use the echo cancel source as your input device and maybe fiddle around with your volume settings. You can open the volume management app by clicking on the yellow sound icon at the top right corner of your screen.
 
 Screenshots:
 ------------
