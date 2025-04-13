@@ -2,6 +2,7 @@
 set $mod Mod4
 set $term foot
 set $browser firefox
+set $file_transfer syncthing --no-browser
 
 # Visual
 gaps inner 8
@@ -24,6 +25,7 @@ output * bg '~/.config/sway/wall.png' fill
 # Bindings
 bindsym Ctrl+Alt+t exec $term
 bindsym Ctrl+Alt+b exec $browser
+bindsym Ctrl+Alt+s exec $file_transfer
 
 bindsym $mod+Ctrl+W kill
 bindsym $mod+Ctrl+R reload

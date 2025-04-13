@@ -10,6 +10,12 @@ echo "Installing core packages for system setup..."
 doas apk add linux-firmware iwd openresolv sway swaybg grim slurp clipman pipewire pipewire-pulse pipewire-echo-cancel wireplumber flatpak bubblewrap man-db || { echo "Installation failed! Exiting."; exit 1; }
 doas apk add htop pamixer foot cargo firefox || echo "Failed to install extra tools!"
 
+echo "Do you want to install the firefox browser and the syncthing file transfer tool? (yes/no)"
+read conextras
+if [ "$conextras" = "yes" ]; then
+    doas apk add firefox syncthing
+fi
+
 echo "Do you need Bluetooth management? (yes/no)"
 read bluetooth_choice
 if [ "$bluetooth_choice" = "yes" ]; then
