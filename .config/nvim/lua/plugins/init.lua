@@ -1,11 +1,9 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
+    event = 'BufWritePre',
     opts = require "configs.conform",
   },
-
-  -- These are some examples, uncomment them if you want to see them work!
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -21,8 +19,29 @@ return {
     "nvim-treesitter/nvim-treesitter",
      opts = {
        ensure_installed = {
-   	"vim", "rust", "c", "cpp", "go"
+      	"vim", "rust", "c", "cpp", "go", "asm"
        },
      },
    },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
+    config = function()
+    require("mason-lspconfig").setup({
+      ensure_installed = {
+        "asm_lsp",
+        "rust_analyzer",
+      },
+      automatic_installation = true,
+    })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      local lspconfig = require("lspconfig")
+      lspconfig.asm_lsp.setup({})
+      lspconfig.rust_analyzer.setup({})
+    end,
+  },
 }

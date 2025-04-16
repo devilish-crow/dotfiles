@@ -11,6 +11,7 @@ These are my dotfiles for Alpine Linux. They include:
 - rofi (stylised app launcher)
 - waybar (status bar)
 - foot (terminal)
+- neovim (code editor for rust and assembly, I'll add more LSPs when I'll need them)
 
 Installing:
 -----------
