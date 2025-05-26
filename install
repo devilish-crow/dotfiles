@@ -7,7 +7,7 @@ while [ -z "$USER" ]; do
 done
 
 echo "Installing core packages for system setup..."
-doas apk add linux-firmware iwd openresolv sway swaybg grim slurp clipman pipewire pipewire-pulse pipewire-echo-cancel wireplumber flatpak bubblewrap man-db || { echo "Installation failed! Exiting."; exit 1; }
+doas apk add linux-firmware iwd openresolv seatd sway swaybg waybar grim slurp clipman pipewire pipewire-pulse pipewire-echo-cancel wireplumber flatpak bubblewrap man-db || { echo "Installation failed! Exiting."; exit 1; }
 doas apk add htop pamixer foot cargo firefox || echo "Failed to install extra tools!"
 
 echo "Do you need a code editor? (yes/no)"
@@ -73,6 +73,7 @@ EOF
 
 doas chmod +x /etc/init.d/alpine-update
 doas rc-update add alpine-update default
+doas rc-update add seatd default
 
 echo "Cleaning up old networking configuration..."
 doas rm /etc/init.d/wpa_* 2> /dev/null
@@ -116,6 +117,7 @@ vt = 7
 command = "tuigreet --cmd sway-run --time"
 user = "$USER"
 EOF
+    rc-update add greetd default
 fi
 
 echo "Installation complete. You now have a desktop! :yeppie:"
