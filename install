@@ -8,7 +8,7 @@ done
 
 echo "Installing core packages for system setup..."
 doas apk add linux-firmware mesa-dri-gallium util-linux-login iwd openresolv seatd i3status xwayland sway swaybg waybar grim slurp clipman pipewire pipewire-pulse pipewire-echo-cancel wireplumber flatpak bubblewrap man-db || { echo "Installation failed! Exiting."; exit 1; }
-doas apk add font-jetbrains-mono-nerd htop pamixer foot cargo firefox || echo "Failed to install extra tools!"
+doas apk add font-jetbrains-mono-nerd htop pulsemixer foot cargo firefox || echo "Failed to install extra tools!"
 
 echo "Do you need a code editor? (yes/no)"
 read neovim
