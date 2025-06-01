@@ -1,8 +1,8 @@
 #!/bin/ash
-echo "Please enter your username:"
+printf "Please enter your username: "
 read USER
 while [ -z "$USER" ]; do
-    echo "Username cannot be empty. Please enter a valid username:"
+    printf "Username cannot be empty. Please enter a valid username: "
     read USER
 done
 
@@ -10,13 +10,13 @@ echo "Installing core packages for system setup..."
 doas apk add linux-firmware mesa-dri-gallium util-linux-login iwd openresolv seatd i3status xwayland sway swaybg waybar grim slurp clipman pipewire pipewire-pulse pipewire-echo-cancel wireplumber flatpak bubblewrap man-db || { echo "Installation failed! Exiting."; exit 1; }
 doas apk add font-jetbrains-mono-nerd htop pulsemixer foot cargo firefox || echo "Failed to install extra tools!"
 
-echo "Do you need a code editor? (yes/no)"
+printf "Do you need a code editor? (yes/no): "
 read neovim
 if [ "$neovim" = "yes" ]; then 
  doas apk add neovim openssl-dev openssl-libs-static zlib-dev zlib-static build-base
 fi
 
-echo "Do you need Bluetooth management? (yes/no)"
+printf "Do you need Bluetooth management? (yes/no): "
 read bluetooth_choice
 if [ "$bluetooth_choice" = "yes" ]; then
     echo "Setting up Bluetooth management..."
@@ -26,14 +26,14 @@ if [ "$bluetooth_choice" = "yes" ]; then
     cargo install bluetui || echo "Failed to install bluetui!"
 fi
 
-echo "Do you want to enable screen sharing (Desktop Portals)? (yes/no)"
+printf "Do you want to enable screen sharing (Desktop Portals)? (yes/no): "
 read screen_sharing_choice
 if [ "$screen_sharing_choice" = "yes" ]; then
     echo "Setting up Desktop Portals for screen sharing..."
     doas apk add xdg-desktop-portal xdg-desktop-portal-wlr || { echo "Failed to install desktop portals!"; exit 1; }
 fi
 
-echo "Do you want to set up kiosk mode? (yes/no)"
+printf "Do you want to set up kiosk mode? (yes/no): "
 read kiosk_choice
 if [ "$kiosk_choice" = "yes" ]; then
     echo "Setting up kiosk mode dependencies without greeter..."
