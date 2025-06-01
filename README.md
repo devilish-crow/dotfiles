@@ -16,11 +16,11 @@ These are my dotfiles for Alpine Linux. They include:
 Installing:
 -----------
 WARNING: The installation process will wipe your ~/.profile and /etc/greetd/config.toml <br>
-You can use the `install` ash script to install this configuration on your Alpine machine. You could also execute `sway-run` to start the desktop enviroment.
+You can use the `install` ash script to install this configuration on your Alpine machine. You could also execute `sway-run` to start the desktop enviroment if you don't like tuigreet.
 
 Networking:
 -----------
-Impala does not currently support connecting to or changing the connected wireless network, you will need to press Ctrl+Alt+T to open your default shell in foot and then type `iwctl` to open the cli frontend of iwd.
+Impala does not currently support connecting to or changing the connected wireless network, you will need to press Ctrl+Alt+T to open your default shell in foot and then use the cli frontend of the internet wireless daemon, iwcli.
 
 Sound:
 ------
@@ -34,4 +34,4 @@ Screenshots:
 
 Kiosk Mode:
 -----------
-This setup can be used for kiosk systems in case you need better reliability. The included `install.sh` script can be easily modified to install kiosk desktop enviroments.
+This setup can be used for kiosk systems in case you need better reliability. If you select it, cagebreak will be installed instead of sway. This exists just because I couldn't get my RPI's GPU to work with sway. :/
