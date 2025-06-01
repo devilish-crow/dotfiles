@@ -28,10 +28,10 @@ Your audio input might feel the effects of echoing. To fix that, you will need t
 
 Screenshots:
 ------------
-![desktop wallpaper](https://cdn.discordapp.com/attachments/1140271425719107766/1358188174207226027/screenshot-04-06_00.png?ex=67f2eece&is=67f19d4e&hm=18793015382caa7d179c04f7ba9433344bc9e86a39a97ab725405944be63f444&)
-![app launcher](https://cdn.discordapp.com/attachments/1140271425719107766/1358188360497102858/screenshot-04-06_00.png?ex=67f2eefb&is=67f19d7b&hm=356d8051e193be066a8072c356a1d05ca7116852eb5756dfcb79d1c377d77754&)
-![system management apps](https://cdn.discordapp.com/attachments/1140271425719107766/1358188459390402713/screenshot-04-06_00.png?ex=67f2ef12&is=67f19d92&hm=7abf4e37bd13d9d196a8834828dfa90fd52046e0d9a6ec39faec2ef138d8e49e&)
+![desktop wallpaper](https://media.discordapp.net/attachments/1140271425719107766/1358188174207226027/screenshot-04-06_00.png?ex=683d6b8e&is=683c1a0e&hm=83f0be878256bcbeca31d9697482af7387f1c57c1f77f9cd9743e094e77407cc&=&format=webp&quality=lossless&width=802&height=451)
+![app launcher](https://media.discordapp.net/attachments/1140271425719107766/1358188360497102858/screenshot-04-06_00.png?ex=683d6bbb&is=683c1a3b&hm=5c65e6e7f12e2d370eb6f8363e1b6638963986fabedd4f2b73f862c56f248969&=&format=webp&quality=lossless&width=802&height=451)
+![system management apps](https://media.discordapp.net/attachments/1140271425719107766/1358188459390402713/screenshot-04-06_00.png?ex=683d6bd2&is=683c1a52&hm=c58fba106488d2ad0c55f8d60f0e10f1cc8a028d0d488dc270a73ace1e757d9f&=&format=webp&quality=lossless&width=802&height=451)
 
 Kiosk Mode:
 -----------
-This setup can be used for kiosk systems. The included `install.sh` script can be easily modified to install kiosk desktop enviroments.
+This setup can be used for kiosk systems in case you need better reliability. The included `install.sh` script can be easily modified to install kiosk desktop enviroments.
