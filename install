@@ -58,10 +58,7 @@ cat <<EOF | doas tee /etc/init.d/alpine-update > /dev/null
 description="Alpine Linux system updater"
 
 depend() {
-  need localmount
   need networking
-  need bootmisc
-  need iwd
 }
 
 start() {
