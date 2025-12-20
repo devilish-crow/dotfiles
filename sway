@@ -1,0 +1,31 @@
+#!/bin/ash
+export XDG_SESSION_TYPE=wayland
+export XDG_SESSION_DESKTOP=sway
+export XDG_CURRENT_DESKTOP=sway
+export XDG_CONFIG_PATH=$HOME/.config/
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+
+export MOZ_ENABLE_WAYLAND=1
+export QT_QPA_PLATFORM=wayland
+export SDL_VIDEODRIVER=wayland
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+pkill -u "${USER}" -fx /usr/bin/pipewire-pulse 1>/dev/null 2>&1
+pkill -u "${USER}" -fx /usr/bin/pipewire-media-session 1>/dev/null 2>&1
+pkill -u "${USER}" -fx /usr/bin/wireplumber 1>/dev/null 2>&1
+pkill -u "${USER}" -fx /usr/bin/pipewire 1>/dev/null 2>&1
+
+pipewire &
+while [ "$(pgrep -f pipewire)" = "" ]; do
+	sleep 1
+done
+
+if [ -x /usr/bin/wireplumber ]; then
+	wireplumber &
+elif [ -x /usr/bin/pipewire-media-session ]; then
+	pipewire-media-session &
+fi
+
+[ -f "/usr/share/pipewire/pipewire-pulse.conf" ] && pipewire-pulse &
+pactl load-module module-echo-cancel
+env -u DISPLAY dbus-run-session sway "$@"
