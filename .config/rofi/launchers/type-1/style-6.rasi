@@ -1,0 +1,128 @@
+/**
+ *
+ * Author : Aditya Shakya (adi1090x)
+ * Rofi Version: 1.7.3
+ **/
+
+/*****----- Configuration -----*****/
+configuration {
+    modi:                       "drun,run,filebrowser,window";
+    show-icons:                 true;
+    display-drun:               "  Apps";
+    display-run:                "  Run";
+    display-filebrowser:        "  Files";
+    display-window:             "  Windows";
+    drun-display-format:        "{name}";
+    window-format:              "{title} · {app-id}";
+}
+
+/*****----- Global Properties -----*****/
+@import "shared/colors.rasi"
+@import "shared/fonts.rasi"
+
+* {
+    background-color:           transparent;
+    text-color:                 @foreground;
+}
+
+/*****----- Main Window -----*****/
+window {
+    transparency:               "real";
+    location:                   center;
+    anchor:                     center;
+    fullscreen:                 false;
+    width:                      800px;
+
+    background-color:           rgba(24, 24, 37, 0.88);
+
+    border:                     1px;
+    border-color:               rgba(205, 214, 244, 0.12);
+    border-radius:              14px;
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    spacing:                    14px;
+    padding:                    24px;
+    children:                   [ "inputbar", "mode-switcher", "message", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    spacing:                    10px;
+    children:                   [ "textbox-prompt-colon", "entry" ];
+}
+
+textbox-prompt-colon {
+    enabled:                    true;
+    expand:                     false;
+    str:                        "";
+    width:                      36px;
+    padding:                    0px;
+    vertical-align:             0.5;
+    horizontal-align:           0.5;
+    text-color:                 @foreground;
+}
+
+entry {
+    padding:                    6px 8px;
+    text-color:                 @foreground;
+    placeholder:                "Search...";
+    placeholder-color:          rgba(205, 214, 244, 0.5);
+}
+
+/*****----- Listview -----*****/
+listview {
+    lines:                      8;
+    spacing:                    6px;
+}
+
+/*****----- Elements -----*****/
+element {
+    spacing:                    16px;        /* space between icon + text */
+    padding:                    12px 14px;
+    border-radius:              10px;
+}
+
+element selected.normal {
+    background-color:           rgba(205, 214, 244, 0.18);
+}
+
+element-icon {
+    size:                       22px;
+    margin:                     0px 6px 0px 0px;  /* extra space after icon */
+    vertical-align:             0.5;
+}
+
+element-text {
+    vertical-align:             0.5;
+}
+
+/*****----- Mode Switcher -----*****/
+mode-switcher {
+    spacing:                    10px;
+}
+
+button {
+    padding:                    14px 18px;
+    margin:                     0px 4px;
+    border-radius:              10px;
+    background-color:           rgba(205, 214, 244, 0.08);
+}
+
+button selected {
+    background-color:           rgba(205, 214, 244, 0.22);
+}
+
+/*****----- Message -----*****/
+message {
+    background-color:           transparent;
+}
+
+textbox {
+    padding:                    12px;
+    border-radius:              8px;
+    background-color:           rgba(205, 214, 244, 0.08);
+    text-color:                 @foreground;
+}
+
