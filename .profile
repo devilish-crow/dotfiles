@@ -3,14 +3,16 @@ export MANPAGER=less
 
 # Utility functions
 adm() {
-  sudo apk add $1
-  sudo apk add $1-doc
+  doas apk add $1
+  doas apk add $1-doc
 }
 
 ad() {
-  sudo apk add $1
+  doas apk add $1
 }
 
 # Utility Aliases
 alias "pw"="sudo poweroff"
 alias "rb"="sudo reboot"
+alias "ls"="ls --color"
+alias "rp"="doas adb start-server && adb reverse tcp:53203 tcp:53203"

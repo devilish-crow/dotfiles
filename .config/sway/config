@@ -1,6 +1,6 @@
 # Basic Settings
 set $mod Mod4
-set $term footnew
+set $term foot
 set $browser flatpak run org.mozilla.firefox
 set $file_transfer syncthing --no-browser
 set $launcher rofi -show drun -theme ~/.config/rofi/launchers/type-1/style-6.rasi &
@@ -10,7 +10,7 @@ set $screenshot      grimshot save active
 set $screenshot_area grimshot save area
 
 # Monitor settings
-set $primary eDP-1
+set $primary LVDS-1
 set $secondary HDMI-A-1
 
 # Visual

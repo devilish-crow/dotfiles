@@ -70,7 +70,6 @@
         "format-wifi": "{icon}",
         "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
         "format-disconnected": "󰖪",
-        "interface": "wlan0",
         "tooltip-format-wifi": "󰖩 {essid}\n󰤯 {signalStrength}%\n󰕅 {bandwidthDownBits:2} ↓\n󰓅 {bandwidthUpBits:2} ↑",
         "tooltip-format-disconnected": "󰖪 Disconnected",
         "on-click": "foot -e impala",
