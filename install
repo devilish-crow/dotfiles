@@ -31,7 +31,7 @@ export PATH=$PATH:~/.cargo/bin/
 printf "Do you need a code editor? (y/n): "
 read neovim
 if [ "$neovim" = "y" ]; then 
- rootify apk add neovim build-base
+ rootify apk add helix neovim build-base
 fi
 
 printf "Do you want echo cancelling? (y/n): "
