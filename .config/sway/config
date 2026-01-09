@@ -1,8 +1,8 @@
 # Basic Settings
 set $mod Mod4
 set $term foot
-set $browser flatpak run org.mozilla.firefox
-set $file_transfer syncthing --no-browser
+set $browser flatpak run one.ablaze.floorp
+set $file_transfer syncthing
 set $launcher rofi -show drun -theme ~/.config/rofi/launchers/type-1/style-6.rasi &
 
 # This is kinda grim 
