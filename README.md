@@ -17,7 +17,8 @@ Installing:
 -----------
 > [!WARNING]
 > The installation process will wipe your configurations for iwd and greetd whilst also overwriting your .profile <br>
-You can use the `ansible-playbook playbook.yml --ask-become-pass` to install this configuration on your Alpine machine. You could also execute `sway-run` to start the desktop enviroment if you don't like tuigreet.
+
+You can use `ansible-playbook playbook.yml --ask-become-pass` to install this configuration on your Alpine machine. You could also execute `sway-run` to start the desktop enviroment if you don't like tuigreet.
 
 Sound:
 ------
