@@ -1,0 +1,235 @@
+---
+- name: Provision system
+  hosts: localhost
+  connection: local
+  become: yes
+  become_method: su
+  vars_prompt:
+    - name: user_name
+      prompt: "Please enter your username"
+      private: no
+      default: "crow"
+
+    - name: include_bluetooth
+      prompt: "Include bluetooth? (yes/no)"
+      private: no
+      default: "no"
+
+    - name: include_portal
+      prompt: "Include desktop portal? (yes/no)"
+      private: no
+      default: "no"
+
+    - name: include_service
+      prompt: "Include automatic background updates? (yes/no)"
+      private: no
+      default: "no"
+
+  vars:
+    core_packages:
+      - linux-firmware
+      - mesa-dri-gallium
+      - iwd
+      - openresolv
+      - seatd
+      - greetd
+      - greetd-tuigreet
+      - xwayland
+      - sway
+      - foot
+      - grimshot
+      - clipman
+      - pipewire
+      - pipewire-pulse
+      - pipewire-echo-cancel
+      - rofi
+      - waybar
+      - wireplumber
+      - flatpak
+      - bubblewrap
+    extra_packages:
+      - font-jetbrains-mono-nerd
+      - htop
+      - helix
+      - build-base
+      - cmake
+      - clang
+      - rustup
+      - qutebrowser
+      - syncthing
+    bluetooth_packages:
+      - bluez
+      - bluez-openrc
+      - pipewire-spa-bluez
+      - wireplumber-bluez
+      - playerctl
+    portal_packages:
+      - xdg-desktop-portal
+      - xdg-desktop-portal-wlr
+
+  tasks:
+    - name: Update and upgrade apk
+      community.general.apk:
+        upgrade: yes
+        update_cache: yes
+
+    - name: Install core packages
+      community.general.apk:
+        name: "{{ core_packages }}"
+        state: present
+
+    - name: Install extra packages
+      community.general.apk:
+        name: "{{ extra_packages }}"
+        state: present
+      ignore_errors: yes
+
+    - block:
+        - name: Unblock bluetooth
+          shell: rfkill unblock bluetooth
+          ignore_errors: yes
+
+        - name: Install bluetooth packages
+          community.general.apk:
+            name: "{{ bluetooth_packages }}"
+            state: present
+
+        - name: Enable bluetooth service
+          service:
+            name: bluetooth
+            enabled: yes
+            state: started
+            use: openrc
+
+      when: include_bluetooth == "yes"
+
+    - name: Install desktop portals
+      community.general.apk:
+        name: "{{ portal_packages }}"
+        state: present
+      when: include_portal == "yes"
+
+    - name: Create /etc/periodic
+      file:
+        path: /etc/periodic
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Install update service
+      copy:
+        dest: /etc/periodic/hourly/update
+        owner: root
+        group: root
+        mode: '0755'
+        content: |
+          #!/bin/ash
+          (apk update && apk upgrade) > /dev/null &
+          flatpak update -y &
+          cp /boot/extlinux.conf.old /boot/extlinux.conf
+      when: include_service == "yes"
+
+    - name: Install .profile
+      copy:
+        src: .profile
+        dest: "/home/{{ user_name }}/.profile"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: '0644'
+
+    - name: Add user to wheel group
+      user:
+        name: "{{ user_name }}"
+        groups: wheel
+        append: yes
+
+    - name: Remove wpa_supplicant
+      file:
+        path: /etc/init.d/wpa_{{ item }}
+        state: absent
+      loop: [ 'supplicant', 'cli' ]
+      ignore_errors: yes
+
+    - name: Setup network interfaces
+      copy:
+        dest: /etc/network/interfaces
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          auto lo
+          allow-hotplug eth0
+          allow-hotplug usb0
+
+          iface lo inet loopback
+          iface eth0 inet dhcp
+          iface usb0 inet dhcp
+
+    - name: Setup wireless networking
+      copy:
+        dest: /etc/iwd/main.conf
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          [General]
+          AddressRandomization=network
+          AddressRandomizationRange=full
+          EnableNetworkConfiguration=True
+
+          [Network]
+          NameResolvingService=resolvconf
+
+    - name: Enable wireless networking
+      service:
+        name: iwd
+        enabled: yes
+        runlevel: boot
+        use: openrc
+
+    - name: Install desktop bootsrap
+      move:
+        src: files/sway/run
+        dest: /usr/bin/sway-run
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Create /etc/greetd
+      file:
+        path: /etc/greetd
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Setup login prompt
+      copy:
+        dest: /etc/greetd/config.toml
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          [terminal]
+          vt = 7
+
+          [default_session]
+          command = "tuigreet --cmd sway-run --time"
+          user = "{{ user_name }}"
+
+    - name: Enable login prompt
+      service:
+        name: greetd
+        enabled: yes
+        runlevel: default
+        use: openrc
+
+    - name: Setup other apps
+      copy:
+        src: resources/
+        dest: "/home/{{ user_name }}/.config/"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: preserve
+        force: yes

@@ -1,0 +1,58 @@
+"ui.background" = { bg = "bg" }
+"ui.text" = { fg = "text" }
+"ui.text.focus" = { fg = "white", modifiers = ["bold"] }
+
+"ui.cursor" = { fg = "bg", bg = "text" }
+"ui.cursor.primary" = { fg = "bg", bg = "white" }
+"ui.cursor.match" = { fg = "white", bg = "border", modifiers = ["bold"] }
+
+"ui.selection" = { bg = "border" }
+"ui.selection.primary" = { bg = "border" }
+
+"ui.linenr" = { fg = "gray" }
+"ui.linenr.selected" = { fg = "white", modifiers = ["bold"] }
+
+"ui.statusline" = { fg = "text", bg = "bg" }
+"ui.statusline.inactive" = { fg = "gray", bg = "bg" }
+"ui.statusline.normal" = { fg = "bg", bg = "blue", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "bg", bg = "cyan", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "bg", bg = "orange", modifiers = ["bold"] }
+
+"ui.window" = { fg = "border" }
+"ui.popup" = { fg = "text", bg = "bg" }
+"ui.menu" = { fg = "text", bg = "bg" }
+"ui.menu.selected" = { fg = "white", bg = "blue", modifiers = ["bold"] } 
+
+"ui.help" = { fg = "text", bg = "bg" }
+
+"comment" = { fg = "gray", modifiers = ["italic"] }
+"keyword" = { fg = "blue", modifiers = ["bold"] }
+"type" = { fg = "yellow" }
+"function" = { fg = "cyan" }
+"string" = { fg = "orange" }
+"constant" = { fg = "orange" }
+"variable" = { fg = "text" }
+"operator" = { fg = "text" }
+"punctuation" = { fg = "gray" }
+
+"diagnostic.error" = { fg = "alert", modifiers = ["bold"] }
+"diagnostic.warning" = { fg = "yellow", modifiers = ["bold"] }
+"diagnostic.info" = { fg = "blue" }
+"diagnostic.hint" = { fg = "gray" }
+
+"diff.plus" = { fg = "green" }
+"diff.minus" = { fg = "alert" }
+"diff.delta" = { fg = "orange" }
+
+[palette]
+bg       = "#0F0F0F"
+border   = "#2B2B2B"
+gray     = "#555555"
+text     = "#CCCCCC"
+white    = "#FFFFFF"
+alert    = "#FF5555"
+green    = "#55FF55"
+blue     = "#55AAFF"
+yellow   = "#FFFF55"
+orange   = "#FF8855"
+cyan     = "#55FFFF"

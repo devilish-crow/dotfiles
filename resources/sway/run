@@ -1,0 +1,41 @@
+#!/bin/ash
+export XDG_SESSION_TYPE=wayland
+export XDG_SESSION_DESKTOP=sway
+export XDG_CURRENT_DESKTOP=sway
+[ -z "$XDG_RUNTIME_DIR" ] && export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+XDG_MUSIC_DIR="$HOME/Music"
+XDG_VIDEOS_DIR="$HOME/Movies"
+XDG_PICTURES_DIR="$HOME/Pictures"
+XDG_DOWNLOAD_DIR="$HOME/Downloads"
+XDG_DOCUMENTS_DIR="$HOME/Documents"
+
+export MOZ_ENABLE_WAYLAND=1
+export QT_QPA_PLATFORM=wayland
+export SDL_VIDEODRIVER=wayland
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+pkill -u "$USER" -fx /usr/bin/pipewire-pulse 1>/dev/null 2>&1
+pkill -u "$USER" -fx /usr/bin/pipewire-media-session 1>/dev/null 2>&1
+pkill -u "$USER" -fx /usr/bin/wireplumber 1>/dev/null 2>&1
+pkill -u "$USER" -fx /usr/bin/pipewire 1>/dev/null 2>&1
+
+pipewire &
+while [ "$(pgrep -f pipewire)" = "" ]; do
+	sleep 1
+done
+
+if [ -x /usr/bin/wireplumber ]; then
+	wireplumber &
+elif [ -x /usr/bin/pipewire-media-session ]; then
+	pipewire-media-session &
+fi
+
+[ -f "/usr/share/pipewire/pipewire-pulse.conf" ] && pipewire-pulse &
+pactl load-module module-echo-cancel  # Should probably be removed if you do not want echo cancelling
+env -u DISPLAY dbus-run-session sway "$@"

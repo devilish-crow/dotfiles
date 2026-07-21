@@ -1,0 +1,100 @@
+configuration {
+    modi: "drun,run,filebrowser";
+    drun-display-format: "{name}";
+
+    filebrowser {
+        directory: "~";
+    }
+
+    kb-row-tab: "";
+    kb-element-next: "";
+    kb-mode-next: "Tab";
+    kb-mode-previous: "Shift+Tab";
+}
+
+* {
+    font: "JetBrainsMono Nerd Font 13";
+    
+    bg-col:  #0F0F0F;
+    border-col: #2B2B2B;
+    text-col: #CCCCCC;
+    text-dim: #555555; 
+    text-focus: #FFFFFF; 
+
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    spacing: 0;
+}
+
+window {
+    width: 500px;
+    background-color: @bg-col;
+    border: 1px solid;
+    border-color: @border-col;
+    padding: 12px; 
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    border: 0px 0px 1px 0px; 
+    border-color: @border-col;
+    padding: 0px 0px 8px 0px; 
+    margin: 0px 0px 8px 0px; 
+    children: [ textbox-prompt-colon, entry ];
+}
+
+textbox-prompt-colon {
+    expand: false;
+    str: ">";
+    text-color: @text-focus;
+    font: "JetBrainsMono Nerd Font Bold 13"; 
+    padding: 0px 8px 0px 0px;
+}
+
+entry {
+    text-color: @text-focus;
+    placeholder: "Search...";
+    placeholder-color: @text-dim;
+}
+
+listview {
+    lines: 8;
+    columns: 1;
+    scrollbar: false;
+    border: 0px;
+    spacing: 4px; 
+}
+
+element {
+    padding: 2px 4px; 
+    background-color: transparent;
+}
+
+element normal.normal, 
+element alternate.normal,
+element normal.active,
+element alternate.active {
+    text-color: @text-dim;
+    background-color: transparent;
+}
+
+element selected.normal, 
+element selected.active,
+element selected.urgent {
+    text-color: @text-focus;
+    background-color: transparent;
+}
+
+element-text, element-icon {
+    background-color: inherit;
+    text-color: inherit;
+    cursor: pointer;
+}
+
+element-text {
+    highlight: none;
+}
