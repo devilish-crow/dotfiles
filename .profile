@@ -7,12 +7,12 @@ adm() {
   doas apk add $1-doc
 }
 
-ad() {
+add() {
   doas apk add $1
 }
 
 # Utility Aliases
-alias "pw"="sudo poweroff"
-alias "rb"="sudo reboot"
+alias "pw"="doas poweroff"
+alias "rb"="doas reboot"
 alias "ls"="ls --color"
 alias "rp"="doas adb start-server && adb reverse tcp:53203 tcp:53203"
