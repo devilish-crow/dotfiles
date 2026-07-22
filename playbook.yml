@@ -4,11 +4,17 @@
   connection: local
   become: yes
   become_method: su
+  
   vars_prompt:
     - name: user_name
       prompt: "Please enter your username"
       private: no
       default: "crow"
+
+    - name: hibernation
+      prompt: "Press enter to disable hibernation or input your swap partition! (eg: /dev/sda2)"
+      private: no
+      default: ""
 
     - name: include_bluetooth
       prompt: "Include bluetooth? (yes/no)"
@@ -68,7 +74,7 @@
       - xdg-desktop-portal-wlr
 
   tasks:
-    - name: Update and upgrade apk
+    - name: Update system
       community.general.apk:
         upgrade: yes
         update_cache: yes
@@ -84,65 +90,36 @@
         state: present
       ignore_errors: yes
 
-    - block:
-        - name: Unblock bluetooth
-          shell: rfkill unblock bluetooth
-          ignore_errors: yes
-
-        - name: Install bluetooth packages
-          community.general.apk:
-            name: "{{ bluetooth_packages }}"
-            state: present
-
-        - name: Enable bluetooth service
-          service:
-            name: bluetooth
-            enabled: yes
-            state: started
-            use: openrc
-
-      when: include_bluetooth == "yes"
-
-    - name: Install desktop portals
-      community.general.apk:
-        name: "{{ portal_packages }}"
-        state: present
-      when: include_portal == "yes"
-
-    - name: Create /etc/periodic
-      file:
-        path: /etc/periodic
-        state: directory
-        owner: root
-        group: root
-        mode: '0755'
-
-    - name: Install update service
-      copy:
-        dest: /etc/periodic/hourly/update
-        owner: root
-        group: root
-        mode: '0755'
-        content: |
-          #!/bin/ash
-          (apk update && apk upgrade) > /dev/null &
-          flatpak update -y &
-          cp /boot/extlinux.conf.old /boot/extlinux.conf
-      when: include_service == "yes"
-
-    - name: Install .profile
-      copy:
-        src: .profile
-        dest: "/home/{{ user_name }}/.profile"
-        owner: "{{ user_name }}"
-        group: "{{ user_name }}"
-        mode: '0644'
-
     - name: Add user to wheel group
       user:
         name: "{{ user_name }}"
         groups: wheel
         append: yes
+
+    - name: Install .profile
+      copy:
+        src: "{{ playbook_dir }}/.profile"
+        dest: "/home/{{ user_name }}/.profile"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: '0644'
+
+    - name: Ensure ~/.config
+      file:
+        path: "/home/{{ user_name }}/.config"
+        state: directory
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: '0755'
+
+    - name: Setup apps configurations
+      copy:
+        src: "{{ playbook_dir }}/resources/"
+        dest: "/home/{{ user_name }}/.config/"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: preserve
+        force: yes
 
     - name: Remove wpa_supplicant
       file:
@@ -185,18 +162,73 @@
       service:
         name: iwd
         enabled: yes
+        state: started
         runlevel: boot
         use: openrc
 
-    - name: Install desktop bootsrap
-      move:
-        src: files/sway/run
+    - name: Setup bluetooth
+      block:
+        - name: Unblock bluetooth
+          shell: rfkill unblock bluetooth
+          ignore_errors: yes
+
+        - name: Install bluetooth packages
+          community.general.apk:
+            name: "{{ bluetooth_packages }}"
+            state: present
+
+        - name: Enable bluetooth service
+          service:
+            name: bluetooth
+            enabled: yes
+            state: started
+            use: openrc
+      when: include_bluetooth == "yes"
+
+    - name: Install desktop portals
+      community.general.apk:
+        name: "{{ portal_packages }}"
+        state: present
+      when: include_portal == "yes"
+
+    - name: Setup automatic updates service
+      block:
+        - name: Ensure /etc/periodic
+          file:
+            path: /etc/periodic
+            state: directory
+            owner: root
+            group: root
+            mode: '0755'
+
+        - name: Install update service
+          copy:
+            dest: /etc/periodic/hourly/update
+            owner: root
+            group: root
+            mode: '0755'
+            content: |
+              #!/bin/ash
+              (apk update && apk upgrade) > /dev/null &
+              flatpak update -y &
+      when: include_service == "yes"
+
+    - name: Install desktop bootstrap
+      copy:
+        src: "{{ playbook_dir }}/files/sway/run"
         dest: /usr/bin/sway-run
         owner: root
         group: root
         mode: '0755'
 
-    - name: Create /etc/greetd
+    - name: Enable seatd service
+      service:
+        name: seatd
+        enabled: yes
+        state: started
+        use: openrc
+
+    - name: Ensure /etc/greetd
       file:
         path: /etc/greetd
         state: directory
@@ -222,14 +254,27 @@
       service:
         name: greetd
         enabled: yes
+        state: started
         runlevel: default
         use: openrc
 
-    - name: Setup other apps
+    - name: Ensure /etc/update-extlinux.conf
       copy:
-        src: resources/
-        dest: "/home/{{ user_name }}/.config/"
-        owner: "{{ user_name }}"
-        group: "{{ user_name }}"
-        mode: preserve
-        force: yes
+        dest: /etc/update-extlinux.conf
+        content: |
+          default_kernel_opts="quiet rootfstype=ext4"
+        force: no
+
+    - name: Setup hibernation
+      lineinfile:
+        path: /etc/update-extlinux.conf
+        regexp: '^default_kernel_opts='
+        line: 'default_kernel_opts="quiet rootfstype=ext4 resume={{ hibernate }}"'
+        backup: yes
+      when: hibernate != ""
+
+    - name: Regenerate bootloader options
+      command:
+        cmd: update-extlinux
+      when: hibernate != ""
+      changed_when: true

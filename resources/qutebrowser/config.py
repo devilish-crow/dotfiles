@@ -13,8 +13,9 @@
 # Change the argument to True to still load settings configured via autoconfig.yml
 config.load_autoconfig(False)
 
-config.set('content.headers.user_agent', 'Mozilla/5.0 (X11; Linux i686; rv:151.0) Gecko/20100101 Firefox/151.0', 'htttps://*.google.com/*')
 config.set('content.headers.user_agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36')
+config.set('content.headers.user_agent', 'Mozilla/5.0 (X11; Linux i686; rv:151.0) Gecko/20100101 Firefox/151.0', 'https://*.google.com/*')
+
 c.content.canvas_reading = False
 c.content.webgl = False
 
@@ -47,40 +48,6 @@ config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
 # Type: String
 config.set('content.headers.accept_language', '', 'https://matchmaker.krunker.io/*')
 
-# User agent to send.  The following placeholders are defined:  *
-# `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
-# The underlying WebKit version (set to a fixed value   with
-# QtWebEngine). * `{qt_key}`: "Qt" for QtWebKit, "QtWebEngine" for
-# QtWebEngine. * `{qt_version}`: The underlying Qt version. *
-# `{upstream_browser_key}`: "Version" for QtWebKit, "Chrome" for
-# QtWebEngine. * `{upstream_browser_version}`: The corresponding
-# Safari/Chrome version. * `{upstream_browser_version_short}`: The
-# corresponding Safari/Chrome   version, but only with its major
-# version. * `{qutebrowser_version}`: The currently running qutebrowser
-# version.  The default value is equal to the default user agent of
-# QtWebKit/QtWebEngine, but with the `QtWebEngine/...` part removed for
-# increased compatibility.  Note that the value read from JavaScript is
-# always the global value.
-# Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:149.0) Gecko/20100101 Firefox/149.0', 'https://accounts.google.com/*')
-
-# User agent to send.  The following placeholders are defined:  *
-# `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
-# The underlying WebKit version (set to a fixed value   with
-# QtWebEngine). * `{qt_key}`: "Qt" for QtWebKit, "QtWebEngine" for
-# QtWebEngine. * `{qt_version}`: The underlying Qt version. *
-# `{upstream_browser_key}`: "Version" for QtWebKit, "Chrome" for
-# QtWebEngine. * `{upstream_browser_version}`: The corresponding
-# Safari/Chrome version. * `{upstream_browser_version_short}`: The
-# corresponding Safari/Chrome   version, but only with its major
-# version. * `{qutebrowser_version}`: The currently running qutebrowser
-# version.  The default value is equal to the default user agent of
-# QtWebKit/QtWebEngine, but with the `QtWebEngine/...` part removed for
-# increased compatibility.  Note that the value read from JavaScript is
-# always the global value.
-# Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {qt_key}/{qt_version} {upstream_browser_key}/{upstream_browser_version_short} Safari/{webkit_version}', 'https://gitlab.gnome.org/*')
-
 # Load images automatically in web pages.
 # Type: Bool
 config.set('content.images', True, 'chrome-devtools://*')
@@ -107,8 +74,4 @@ config.set('content.javascript.enabled', True, 'qute://*/*')
 
 # Allow locally loaded documents to access remote URLs.
 # Type: Bool
-config.set('content.local_content_can_access_remote_urls', True, 'file:///home/crow/.local/share/qutebrowser/userscripts/*')
-
-# Allow locally loaded documents to access other local URLs.
-# Type: Bool
-config.set('content.local_content_can_access_file_urls', False, 'file:///home/crow/.local/share/qutebrowser/userscripts/*')
+config.set('content.local_content_can_access_remote_urls', False)

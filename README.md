@@ -20,6 +20,10 @@ Installing:
 
 You can use `ansible-playbook playbook.yml --ask-become-pass` to install this configuration on your Alpine machine. You could also execute `sway-run` to start the desktop enviroment if you don't like tuigreet.
 
+Hibernation:
+------------
+I can't be bothered to add support for GRUB, which is the default bootloader on all UEFI devices, to the hibernation option so I recommend skipping it if you have a device made in the past decade.
+
 Sound:
 ------
 Your audio input might feel the effects of echoing. To fix that, you will need to set up your applications to use the echo cancel source as your input device and maybe fiddle around with your volume settings.
